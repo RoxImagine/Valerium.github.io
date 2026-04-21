@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laws — Valerium</title>
+    <meta name="description" content="The enacted legislation and legal framework of the Sincere Republic of Valerium.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav class="nav scrolled" id="mainNav">
+        <a href="index.html" class="nav-brand">
+            <div class="brand-icon">V</div>
+            <span>Valerium</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="government.html">Government</a></li>
+            <li><a href="citizenship.html">Citizenship</a></li>
+            <li><a href="laws.html" class="active">Laws</a></li>
+            <li><a href="projects.html">Projects</a></li>
+        </ul>
+        <div class="nav-hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="hero-bg">
+            <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=1920&auto=format&fit=crop" alt="Laws background">
+        </div>
+        <div class="page-hero-content">
+            <span class="section-label">Legal Framework</span>
+            <h1>Laws &amp; Legislation</h1>
+            <p>The legal foundation of the Republic — all enacted laws, constitutional articles, and legislative records.</p>
+        </div>
+    </section>
+
+    <div class="content-section fade-in">
+        <h2>Legislative Registry</h2>
+        <p>All legislation enacted by the Republic is recorded and maintained here for public access. The table below lists current laws and their status.</p>
+
+        <table class="laws-table">
+            <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>Title</th>
+                    <th>Date Enacted</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>VL-001</td>
+                    <td>Constitution of the Sincere Republic of Valerium</td>
+                    <td>2025</td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                </tr>
+                <tr>
+                    <td>VL-002</td>
+                    <td>Citizenship Act</td>
+                    <td>2025</td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                </tr>
+                <tr>
+                    <td>VL-003</td>
+                    <td>Government Structure Act</td>
+                    <td>2025</td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                </tr>
+                <tr>
+                    <td>VL-004</td>
+                    <td>Digital Rights &amp; Privacy Act</td>
+                    <td>—</td>
+                    <td><span class="status-badge status-pending">Pending</span></td>
+                </tr>
+                <tr>
+                    <td>VL-005</td>
+                    <td>Electoral Procedures Act</td>
+                    <td>—</td>
+                    <td><span class="status-badge status-pending">Pending</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content-section fade-in">
+        <h2>Constitutional Principles</h2>
+        <p>The Constitution of Valerium establishes the fundamental rights and obligations of citizens, the structure of the government, and the mechanisms through which laws are created, amended, and enforced. It is the supreme legal document of the Republic.</p>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <span>Valerium</span>
+                <p>The Sincere Republic of Valerium — a sovereign digital state committed to governance, stability, and innovation.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigate</h4>
+                <ul><li><a href="index.html">Home</a></li><li><a href="information.html">Information</a></li><li><a href="government.html">Government</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Republic</h4>
+                <ul><li><a href="citizenship.html">Citizenship</a></li><li><a href="laws.html">Laws</a></li><li><a href="projects.html">Projects</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <ul><li><a href="https://discord.gg/G9WX6ZdXst" target="_blank">Discord</a></li></ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 The Sincere Republic of Valerium. All rights reserved.</p>
+            <p>Gens Valeria Dominum Non Recognoscit</p>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => { document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50); });
+        function toggleMenu() { document.getElementById('navLinks').classList.toggle('open'); }
+        const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.15 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

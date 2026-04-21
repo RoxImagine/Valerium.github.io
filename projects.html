@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects — Valerium</title>
+    <meta name="description" content="Ongoing projects and initiatives by the Sincere Republic of Valerium.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav class="nav scrolled" id="mainNav">
+        <a href="index.html" class="nav-brand">
+            <div class="brand-icon">V</div>
+            <span>Valerium</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="government.html">Government</a></li>
+            <li><a href="citizenship.html">Citizenship</a></li>
+            <li><a href="laws.html">Laws</a></li>
+            <li><a href="projects.html" class="active">Projects</a></li>
+        </ul>
+        <div class="nav-hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="hero-bg">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1920&auto=format&fit=crop" alt="Projects background">
+        </div>
+        <div class="page-hero-content">
+            <span class="section-label">Building the Future</span>
+            <h1>Projects</h1>
+            <p>Current and upcoming initiatives driving the development of the Republic forward.</p>
+        </div>
+    </section>
+
+    <section class="section" style="min-height:auto;padding-top:80px;">
+        <div class="section-header fade-in">
+            <span class="section-label">Initiatives</span>
+            <h2 class="section-title">Active Projects</h2>
+            <p class="section-subtitle">The Republic is currently pursuing these key initiatives to strengthen and expand Valerium.</p>
+        </div>
+        <div class="pillars-grid fade-in">
+            <div class="pillar-card" style="cursor:default;">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop" alt="Digital Infrastructure">
+                </div>
+                <div class="card-body">
+                    <div class="card-icon">🌐</div>
+                    <h2 class="card-title">Digital Infrastructure</h2>
+                    <p class="card-desc">Building the core digital infrastructure and platforms that will power Valerium's government systems and citizen services.</p>
+                </div>
+            </div>
+            <div class="pillar-card" style="cursor:default;">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop" alt="Community Growth">
+                </div>
+                <div class="card-body">
+                    <div class="card-icon">👥</div>
+                    <h2 class="card-title">Community Growth</h2>
+                    <p class="card-desc">Expanding the Valerian citizenry through outreach, partnerships, and engagement with like-minded communities worldwide.</p>
+                </div>
+            </div>
+            <div class="pillar-card" style="cursor:default;">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop" alt="Legislative Framework">
+                </div>
+                <div class="card-body">
+                    <div class="card-icon">📜</div>
+                    <h2 class="card-title">Legislative Framework</h2>
+                    <p class="card-desc">Developing a comprehensive legal framework that will govern all aspects of life within the Republic of Valerium.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="min-height:auto;padding-bottom:80px;">
+        <div class="cta-banner fade-in">
+            <h2>Want to Contribute?</h2>
+            <p>Valerium is built by its citizens. Get involved and help shape the projects that will define our nation.</p>
+            <a href="https://discord.gg/G9WX6ZdXst" class="btn btn-primary" target="_blank">Join the Discussion</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <span>Valerium</span>
+                <p>The Sincere Republic of Valerium — a sovereign digital state committed to governance, stability, and innovation.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigate</h4>
+                <ul><li><a href="index.html">Home</a></li><li><a href="information.html">Information</a></li><li><a href="government.html">Government</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Republic</h4>
+                <ul><li><a href="citizenship.html">Citizenship</a></li><li><a href="laws.html">Laws</a></li><li><a href="projects.html">Projects</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <ul><li><a href="https://discord.gg/G9WX6ZdXst" target="_blank">Discord</a></li></ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 The Sincere Republic of Valerium. All rights reserved.</p>
+            <p>Gens Valeria Dominum Non Recognoscit</p>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => { document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50); });
+        function toggleMenu() { document.getElementById('navLinks').classList.toggle('open'); }
+        const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.15 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

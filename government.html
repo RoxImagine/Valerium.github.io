@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government — Valerium</title>
+    <meta name="description" content="The Government of Valerium is the supreme executive authority of the State, entrusted with administration and the enforcement of all enacted laws.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav class="nav scrolled" id="mainNav">
+        <a href="index.html" class="nav-brand">
+            <div class="brand-icon">V</div>
+            <span>Valerium</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="information.html">Information</a></li>
+            <li><a href="government.html" class="active">Government</a></li>
+            <li><a href="citizenship.html">Citizenship</a></li>
+            <li><a href="laws.html">Laws</a></li>
+            <li><a href="projects.html">Projects</a></li>
+        </ul>
+        <div class="nav-hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="hero-bg">
+            <img src="https://images.unsplash.com/photo-1523292562811-8fa7962a78c8?q=80&w=1920&auto=format&fit=crop" alt="Government background">
+        </div>
+        <div class="page-hero-content">
+            <span class="section-label">Executive Authority</span>
+            <h1>The Government</h1>
+            <p>The Government of Valerium is the supreme executive authority of the State, entrusted with the administration of national systems, the preservation of order, and the enforcement of all enacted laws.</p>
+        </div>
+    </section>
+
+    <!-- OFFICIALS -->
+    <section class="section" style="min-height:auto;padding-top:80px;">
+        <div class="section-header fade-in">
+            <span class="section-label">Leadership</span>
+            <h2 class="section-title">Government Officials</h2>
+            <p class="section-subtitle">The elected and appointed officials serving the Republic.</p>
+        </div>
+        <div class="officials-grid fade-in">
+            <div class="official-card">
+                <div class="official-avatar">P</div>
+                <div class="official-name">— TBA —</div>
+                <div class="official-role">President</div>
+            </div>
+            <div class="official-card">
+                <div class="official-avatar">VP</div>
+                <div class="official-name">— TBA —</div>
+                <div class="official-role">Vice President</div>
+            </div>
+            <div class="official-card">
+                <div class="official-avatar">S</div>
+                <div class="official-name">— TBA —</div>
+                <div class="official-role">Secretary of State</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEPARTMENTS -->
+    <section class="section" style="min-height:auto;">
+        <div class="section-header fade-in">
+            <span class="section-label">Structure</span>
+            <h2 class="section-title">Departments &amp; Offices</h2>
+            <p class="section-subtitle">The administrative bodies responsible for executing the functions of the State.</p>
+        </div>
+        <div class="dept-grid fade-in">
+            <div class="dept-card">
+                <h3>Office of the President</h3>
+                <p>The highest executive office, responsible for the overall direction and leadership of the Republic.</p>
+            </div>
+            <div class="dept-card">
+                <h3>Ministry of Internal Affairs</h3>
+                <p>Oversees domestic policy, citizenship administration, and internal security of the State.</p>
+            </div>
+            <div class="dept-card">
+                <h3>Ministry of Foreign Affairs</h3>
+                <p>Manages diplomatic relations, treaties, and international representation of Valerium.</p>
+            </div>
+            <div class="dept-card">
+                <h3>Ministry of Justice</h3>
+                <p>Ensures the fair application of law, manages the judicial system, and upholds constitutional rights.</p>
+            </div>
+            <div class="dept-card">
+                <h3>Ministry of Innovation</h3>
+                <p>Drives technological development, digital infrastructure, and the modernisation of state systems.</p>
+            </div>
+            <div class="dept-card">
+                <h3>Ministry of Culture</h3>
+                <p>Promotes national identity, cultural heritage, community engagement, and creative endeavours.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <span>Valerium</span>
+                <p>The Sincere Republic of Valerium — a sovereign digital state committed to governance, stability, and innovation.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigate</h4>
+                <ul><li><a href="index.html">Home</a></li><li><a href="information.html">Information</a></li><li><a href="government.html">Government</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Republic</h4>
+                <ul><li><a href="citizenship.html">Citizenship</a></li><li><a href="laws.html">Laws</a></li><li><a href="projects.html">Projects</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <ul><li><a href="https://discord.gg/G9WX6ZdXst" target="_blank">Discord</a></li></ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 The Sincere Republic of Valerium. All rights reserved.</p>
+            <p>Gens Valeria Dominum Non Recognoscit</p>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => { document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50); });
+        function toggleMenu() { document.getElementById('navLinks').classList.toggle('open'); }
+        const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.15 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
