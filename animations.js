@@ -3,6 +3,9 @@
    GSAP + ScrollTrigger + Lenis Smooth Scroll
    ======================================================== */
 
+// ─── Register GSAP Plugin ──────────────────────────────
+gsap.registerPlugin(ScrollTrigger);
+
 // ─── Lenis Smooth Scroll ───────────────────────────────
 const lenis = new Lenis({
     duration: 1.4,
@@ -14,13 +17,7 @@ const lenis = new Lenis({
     touchMultiplier: 1.5,
 });
 
-function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-}
-requestAnimationFrame(raf);
-
-// Connect Lenis to GSAP ScrollTrigger
+// Connect Lenis to GSAP ScrollTrigger (single ticker — no duplicate RAF)
 lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add((time) => {
     lenis.raf(time * 1000);
@@ -46,7 +43,11 @@ function initPageLoader() {
             ease: 'power4.inOut',
             delay: 0.1,
         })
-        .set('.page-loader', { display: 'none' });
+        .set('.page-loader', { display: 'none' })
+        .add(() => {
+            // Refresh ScrollTrigger after loader is gone
+            ScrollTrigger.refresh();
+        });
 }
 
 // ─── Navigation Animations ─────────────────────────────
@@ -187,149 +188,129 @@ function initPageHeroAnimations() {
 
 // ─── Scroll-Triggered Reveal Animations ────────────────
 function initScrollRevealAnimations() {
-    // Section labels — slide in with gold line
+
+    // Helper: creates a scroll-triggered "from" animation with safe defaults
+    function scrollFrom(targets, fromVars, triggerEl) {
+        const trigger = triggerEl || targets;
+        gsap.fromTo(targets,
+            // FROM state
+            Object.assign({ opacity: 0 }, fromVars),
+            // TO state
+            Object.assign({ opacity: 1, duration: 0.8, ease: 'power3.out' }, fromVars, {
+                // Override "from" transform values back to 0
+                y: 0, x: 0, scale: 1, rotateX: 0, rotateY: 0,
+                scrollTrigger: {
+                    trigger: trigger,
+                    start: 'top 88%',
+                    toggleActions: 'play none none none',
+                },
+            })
+        );
+    }
+
+    // Section labels — slide in
     gsap.utils.toArray('.section-label').forEach(label => {
-        gsap.from(label, {
-            x: -40,
-            opacity: 0,
-            duration: 0.7,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: label,
-                start: 'top 85%',
-                toggleActions: 'play none none none',
-            },
-        });
+        // Skip labels inside page-hero (those animate via timeline)
+        if (label.closest('.page-hero-content')) return;
+
+        gsap.fromTo(label,
+            { x: -40, opacity: 0 },
+            {
+                x: 0, opacity: 1, duration: 0.7, ease: 'power3.out',
+                scrollTrigger: { trigger: label, start: 'top 88%', toggleActions: 'play none none none' },
+            }
+        );
     });
 
-    // Section titles — clip reveal
+    // Section titles
     gsap.utils.toArray('.section-title').forEach(title => {
-        gsap.from(title, {
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power4.out',
-            scrollTrigger: {
-                trigger: title,
-                start: 'top 85%',
-                toggleActions: 'play none none none',
-            },
-        });
+        gsap.fromTo(title,
+            { y: 50, opacity: 0 },
+            {
+                y: 0, opacity: 1, duration: 0.8, ease: 'power4.out',
+                scrollTrigger: { trigger: title, start: 'top 88%', toggleActions: 'play none none none' },
+            }
+        );
     });
 
     // Section subtitles
     gsap.utils.toArray('.section-subtitle').forEach(sub => {
-        gsap.from(sub, {
-            y: 30,
-            opacity: 0,
-            duration: 0.6,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: sub,
-                start: 'top 85%',
-                toggleActions: 'play none none none',
-            },
-        });
+        gsap.fromTo(sub,
+            { y: 30, opacity: 0 },
+            {
+                y: 0, opacity: 1, duration: 0.6, ease: 'power3.out',
+                scrollTrigger: { trigger: sub, start: 'top 88%', toggleActions: 'play none none none' },
+            }
+        );
     });
 
     // Pillar cards — stagger
     gsap.utils.toArray('.pillars-grid').forEach(grid => {
         const cards = grid.querySelectorAll('.pillar-card');
-        gsap.from(cards, {
-            y: 60,
-            opacity: 0,
-            duration: 0.7,
-            stagger: 0.15,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: grid,
-                start: 'top 80%',
-                toggleActions: 'play none none none',
-            },
-        });
+        gsap.fromTo(cards,
+            { y: 60, opacity: 0 },
+            {
+                y: 0, opacity: 1, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+                scrollTrigger: { trigger: grid, start: 'top 85%', toggleActions: 'play none none none' },
+            }
+        );
     });
 
-    // Official cards — stagger
+    // Official cards — stagger with scale
     gsap.utils.toArray('.officials-grid').forEach(grid => {
         const cards = grid.querySelectorAll('.official-card');
-        gsap.from(cards, {
-            y: 50,
-            opacity: 0,
-            scale: 0.9,
-            duration: 0.6,
-            stagger: 0.12,
-            ease: 'back.out(1.4)',
-            scrollTrigger: {
-                trigger: grid,
-                start: 'top 80%',
-                toggleActions: 'play none none none',
-            },
-        });
+        gsap.fromTo(cards,
+            { y: 50, opacity: 0, scale: 0.9 },
+            {
+                y: 0, opacity: 1, scale: 1, duration: 0.6, stagger: 0.12, ease: 'back.out(1.4)',
+                scrollTrigger: { trigger: grid, start: 'top 85%', toggleActions: 'play none none none' },
+            }
+        );
     });
 
     // Department cards — stagger with rotation
     gsap.utils.toArray('.dept-grid').forEach(grid => {
         const cards = grid.querySelectorAll('.dept-card');
-        gsap.from(cards, {
-            y: 40,
-            opacity: 0,
-            rotateX: 8,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: grid,
-                start: 'top 80%',
-                toggleActions: 'play none none none',
-            },
-        });
+        gsap.fromTo(cards,
+            { y: 40, opacity: 0 },
+            {
+                y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power3.out',
+                scrollTrigger: { trigger: grid, start: 'top 85%', toggleActions: 'play none none none' },
+            }
+        );
     });
 
     // Content sections
     gsap.utils.toArray('.content-section').forEach(section => {
-        gsap.from(section, {
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: section,
-                start: 'top 85%',
-                toggleActions: 'play none none none',
-            },
-        });
+        gsap.fromTo(section,
+            { y: 50, opacity: 0 },
+            {
+                y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+                scrollTrigger: { trigger: section, start: 'top 88%', toggleActions: 'play none none none' },
+            }
+        );
     });
 
     // Laws table rows
     gsap.utils.toArray('.laws-table tbody tr').forEach((row, i) => {
-        gsap.from(row, {
-            x: -40,
-            opacity: 0,
-            duration: 0.5,
-            delay: i * 0.08,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: row,
-                start: 'top 90%',
-                toggleActions: 'play none none none',
-            },
-        });
+        gsap.fromTo(row,
+            { x: -40, opacity: 0 },
+            {
+                x: 0, opacity: 1, duration: 0.5, delay: i * 0.08, ease: 'power3.out',
+                scrollTrigger: { trigger: row, start: 'top 92%', toggleActions: 'play none none none' },
+            }
+        );
     });
 
     // CTA banners
     gsap.utils.toArray('.cta-banner').forEach(cta => {
-        gsap.from(cta, {
-            y: 60,
-            opacity: 0,
-            scale: 0.95,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: cta,
-                start: 'top 85%',
-                toggleActions: 'play none none none',
-            },
-        });
+        gsap.fromTo(cta,
+            { y: 60, opacity: 0, scale: 0.95 },
+            {
+                y: 0, opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out',
+                scrollTrigger: { trigger: cta, start: 'top 88%', toggleActions: 'play none none none' },
+            }
+        );
     });
 }
 
@@ -339,31 +320,22 @@ function initCounterAnimations() {
     if (!statsBar) return;
 
     // Animate the stats bar entrance
-    gsap.from('.stats-bar', {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-            trigger: '.stats-bar',
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-        },
-    });
+    gsap.fromTo('.stats-bar',
+        { y: 40, opacity: 0 },
+        {
+            y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+            scrollTrigger: { trigger: '.stats-bar', start: 'top 88%', toggleActions: 'play none none none' },
+        }
+    );
 
     // Stagger stat items
-    gsap.from('.stat-item', {
-        y: 30,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.12,
-        ease: 'power3.out',
-        scrollTrigger: {
-            trigger: '.stats-bar',
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-        },
-    });
+    gsap.fromTo('.stat-item',
+        { y: 30, opacity: 0 },
+        {
+            y: 0, opacity: 1, duration: 0.6, stagger: 0.12, ease: 'power3.out',
+            scrollTrigger: { trigger: '.stats-bar', start: 'top 85%', toggleActions: 'play none none none' },
+        }
+    );
 
     // Animate the "2025" counter
     const yearEl = document.querySelector('.stat-value');
@@ -371,7 +343,7 @@ function initCounterAnimations() {
         const counter = { val: 2000 };
         ScrollTrigger.create({
             trigger: '.stats-bar',
-            start: 'top 85%',
+            start: 'top 88%',
             once: true,
             onEnter: () => {
                 gsap.to(counter, {
@@ -443,41 +415,29 @@ function initFooterAnimations() {
     const footer = document.querySelector('.footer');
     if (!footer) return;
 
-    gsap.from('.footer-brand', {
-        y: 40,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        scrollTrigger: {
-            trigger: '.footer',
-            start: 'top 90%',
-            toggleActions: 'play none none none',
-        },
-    });
+    gsap.fromTo('.footer-brand',
+        { y: 40, opacity: 0 },
+        {
+            y: 0, opacity: 1, duration: 0.7, ease: 'power3.out',
+            scrollTrigger: { trigger: '.footer', start: 'top 92%', toggleActions: 'play none none none' },
+        }
+    );
 
-    gsap.from('.footer-col', {
-        y: 30,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.1,
-        ease: 'power3.out',
-        scrollTrigger: {
-            trigger: '.footer',
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-        },
-    });
+    gsap.fromTo('.footer-col',
+        { y: 30, opacity: 0 },
+        {
+            y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power3.out',
+            scrollTrigger: { trigger: '.footer', start: 'top 90%', toggleActions: 'play none none none' },
+        }
+    );
 
-    gsap.from('.footer-bottom', {
-        opacity: 0,
-        duration: 0.6,
-        ease: 'power2.out',
-        scrollTrigger: {
-            trigger: '.footer-bottom',
-            start: 'top 95%',
-            toggleActions: 'play none none none',
-        },
-    });
+    gsap.fromTo('.footer-bottom',
+        { opacity: 0 },
+        {
+            opacity: 1, duration: 0.6, ease: 'power2.out',
+            scrollTrigger: { trigger: '.footer-bottom', start: 'top 95%', toggleActions: 'play none none none' },
+        }
+    );
 }
 
 // ─── Floating Particles Background ─────────────────────
@@ -548,6 +508,9 @@ function initParticles() {
 
 // ─── Gold Glow Cursor Trail ────────────────────────────
 function initCursorGlow() {
+    // Only on desktop (no touch devices)
+    if ('ontouchstart' in window) return;
+
     const glow = document.createElement('div');
     glow.className = 'cursor-glow';
     document.body.appendChild(glow);
@@ -559,11 +522,9 @@ function initCursorGlow() {
     });
 
     gsap.ticker.add(() => {
-        gsap.to(glow, {
+        gsap.set(glow, {
             x: mouseX - 200,
             y: mouseY - 200 + window.scrollY,
-            duration: 0.8,
-            ease: 'power2.out',
         });
     });
 }
@@ -572,12 +533,15 @@ function initCursorGlow() {
 function initTextScramble() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     document.querySelectorAll('.section-label').forEach(label => {
+        // Skip labels inside page-hero (animated via timeline)
+        if (label.closest('.page-hero-content')) return;
+
         const original = label.textContent;
         let hasPlayed = false;
 
         ScrollTrigger.create({
             trigger: label,
-            start: 'top 85%',
+            start: 'top 88%',
             once: true,
             onEnter: () => {
                 if (hasPlayed) return;
@@ -630,4 +594,14 @@ document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     initCursorGlow();
     initTextScramble();
+
+    // Safety: refresh ScrollTrigger after everything is set up
+    // and after images have had a moment to load (affects layout)
+    setTimeout(() => {
+        ScrollTrigger.refresh();
+    }, 500);
+
+    window.addEventListener('load', () => {
+        ScrollTrigger.refresh();
+    });
 });
