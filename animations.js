@@ -256,17 +256,6 @@ function initScrollRevealAnimations() {
         );
     });
 
-    // Official cards — stagger with scale
-    gsap.utils.toArray('.officials-grid').forEach(grid => {
-        const cards = grid.querySelectorAll('.official-card');
-        gsap.fromTo(cards,
-            { y: 50, opacity: 0, scale: 0.9 },
-            {
-                y: 0, opacity: 1, scale: 1, duration: 0.6, stagger: 0.12, ease: 'back.out(1.4)',
-                scrollTrigger: { trigger: grid, start: 'top 85%', toggleActions: 'play none none none' },
-            }
-        );
-    });
 
     // Department cards — stagger with rotation
     gsap.utils.toArray('.dept-grid').forEach(grid => {
@@ -337,26 +326,38 @@ function initCounterAnimations() {
         }
     );
 
-    // Animate the "2025" counter
-    const yearEl = document.querySelector('.stat-value');
-    if (yearEl && yearEl.textContent.trim() === '2025') {
-        const counter = { val: 2000 };
-        ScrollTrigger.create({
-            trigger: '.stats-bar',
-            start: 'top 88%',
-            once: true,
-            onEnter: () => {
-                gsap.to(counter, {
-                    val: 2025,
-                    duration: 1.5,
-                    ease: 'power2.out',
-                    onUpdate: () => {
-                        yearEl.textContent = Math.floor(counter.val);
-                    },
-                });
-            },
-        });
-    }
+    // Animate the counters for all numerical stats
+    document.querySelectorAll('.stat-value').forEach(el => {
+        const text = el.textContent.trim();
+        const match = text.match(/^(\d+)(\+?)$/);
+        
+        if (match) {
+            const targetVal = parseInt(match[1], 10);
+            const suffix = match[2];
+            
+            // For years, start from a closer number (e.g., 2000 for 2025)
+            // For smaller numbers, start from 0
+            const startVal = targetVal > 2000 ? targetVal - 25 : 0;
+            
+            const counter = { val: startVal };
+            
+            ScrollTrigger.create({
+                trigger: '.stats-bar',
+                start: 'top 88%',
+                once: true,
+                onEnter: () => {
+                    gsap.to(counter, {
+                        val: targetVal,
+                        duration: 1.5,
+                        ease: 'power2.out',
+                        onUpdate: () => {
+                            el.textContent = Math.floor(counter.val) + suffix;
+                        },
+                    });
+                },
+            });
+        }
+    });
 }
 
 // ─── Magnetic Button Effect ────────────────────────────
@@ -386,7 +387,7 @@ function initMagneticButtons() {
 
 // ─── Card Tilt Effect ──────────────────────────────────
 function initCardTilt() {
-    document.querySelectorAll('.pillar-card, .dept-card, .official-card').forEach(card => {
+    document.querySelectorAll('.pillar-card, .dept-card').forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = (e.clientX - rect.left) / rect.width - 0.5;
@@ -579,6 +580,19 @@ function initNavScroll() {
     });
 }
 
+// ─── Smooth Scroll Anchor Links ────────────────────────
+function initSmoothScrollLinks() {
+    document.querySelectorAll('.hero-scroll').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = btn.getAttribute('href');
+            if (targetId && targetId.startsWith('#')) {
+                lenis.scrollTo(targetId, { offset: -72 }); // offset for fixed nav
+            }
+        });
+    });
+}
+
 // ─── Initialize Everything ─────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     initPageLoader();
@@ -594,6 +608,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     initCursorGlow();
     initTextScramble();
+    initSmoothScrollLinks();
 
     // Safety: refresh ScrollTrigger after everything is set up
     // and after images have had a moment to load (affects layout)
