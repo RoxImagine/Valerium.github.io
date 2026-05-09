@@ -11,7 +11,9 @@
 
     <nav class="nav" id="mainNav">
         <a href="index.html" class="nav-brand">
-            <div class="brand-icon">V</div>
+            <div class="brand-icon">
+                <img src="https://discord.com/channels/1424912960274567281/1479725269492433018/1479780638528634962" alt="CoA of Valerium">
+            </div>
             <span>Valerium</span>
         </a>
         <ul class="nav-links" id="navLinks">
@@ -152,21 +154,10 @@
         </div>
     </footer>
 
-    <script>
-        window.addEventListener('scroll', function() {
-            document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
-        });
-        function toggleMenu() {
-            document.getElementById('navLinks').classList.toggle('open');
-        }
-        var observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.15 });
-        document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
-    </script>
+    <!-- GSAP + ScrollTrigger + Lenis Smooth Scroll -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="animations.js"></script>
 </body>
 </html>
